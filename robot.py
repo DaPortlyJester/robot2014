@@ -1,39 +1,32 @@
-import wpilib
+# Import code from the other files, and 'time' from the built-in python library
+import time
+import drive_train
+import shooter
 
-lstick = wpilib.Joystick(1)
+# Create the Drive Train and Shooter
+# These are defined in the drive_train.py and shooter.py files
+robot_drive_train = drive_train.DriveTrain()
+robot_shooter = shooter.Shooter()
 
-motor = wpilib.CANJaguar(8)
+# Set the pitch of the Shooter to 45 degrees
+robot_shooter.set_pitch_angle(45)
 
-def CheckRestart():
-    if lstick.GetRawButton(10):
-        raise RuntimeError("Restart")
+# Shoot the first disc, and wait 2 seconds for the motor to get back up to speed
+robot_shooter.shoot(100)
+time.sleep(2)
 
-class MyRobot(wpilib.SimpleRobot):
-    def Disabled(self):
-        while self.IsDisabled():
-            CheckRestart()
-            wpilib.Wait(0.01)
+# Shoot the second disc, and wait 2 seconds for the motor to get back up to speed
+robot_shooter.shoot(100)
+time.sleep(2)
 
-    def Autonomous(self):
-        self.GetWatchdog().SetEnabled(False)
-        while self.IsAutonomous() and self.IsEnabled():
-            CheckRestart()
-            wpilib.Wait(0.01)
+# Shoot the last disc
+robot_shooter.shoot(100)
 
-    def OperatorControl(self):
-        dog = self.GetWatchdog()
-        dog.SetEnabled(True)
-        dog.SetExpiration(0.25)
+# Drive backwards after we're finished shooting.
+# If we place ourselves near the center of the field without crossing the line,
+# we save ourselves a little time when we have to drive to the feeder station
+# to get more discs during manual control.
+robot_drive_train.drive_distance(6.0, -0.75)
 
-        while self.IsOperatorControl() and self.IsEnabled():
-            dog.Feed()
-            CheckRestart()
+# Manual control would happen after here...
 
-            # Motor control
-            motor.Set(lstick.GetY())
-
-            wpilib.Wait(0.04)
-
-def run():
-    robot = MyRobot()
-    robot.StartCompetition()
