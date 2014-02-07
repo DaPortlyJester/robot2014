@@ -17,7 +17,7 @@ class Parameters(object):
     # Private member objects
 
     # Private member variables
-    _file = None
+    _file = "Hello"
     _config = None
 
     def __init__(self, parameters_file="parameters.par", mode="r"):
@@ -30,9 +30,9 @@ class Parameters(object):
             mode: The mode to open the file with
 
         """
-        _file = None
-        _config = None
-        file_opened = False
+        self._file = None
+        self._config = None
+        self.file_opened = False
         self._open(parameters_file, mode)
 
     def _open(self, path, mode):
@@ -43,43 +43,38 @@ class Parameters(object):
          Args:
             path: Path to the file
             mode: mode to open the file with
+
         """
 
         if path:
-            _file = open(path, mode)
-            file_opened = True
+            self._config = configparser.SafeConfigParser()
+            self._config.read(path)
             return True
         else:
-            file_opened = False
+            self.file_opened = False
             return False
 
     def _close(self):
         """ Close the file
 
         Close the file and mark not opened
+
         """
-        if _file:
-            _file.close()
-            file_opened = False
+        if self._file:
+            self._file.close()
+            self.file_opened = False
 
+    def get_config(self, section)
+        """ Get the configuration dictionary
 
-    def read_values(self):
-        """ Reads all parameter/value pairs from the file.
+        Get the configuration dictionary for a section
 
-        Reads the entire parameter file and for NAME = VALUE pairs.
-        The pairs are stored as a dictionary. Python should automatically
-        handle typing
-
-        Returns:
-            A dictionary of the parameters read from the file
         """
+        if !_config:
+            return None
 
-        # Instantiate ConfigParser and build dictionary of config options
-        _config = configparser.SafeConfigParser()
-
-        _config.read(_file)
-
-        _config._sections
+        if section:
+            return _config[section]
 
         return _config._sections
 
@@ -94,7 +89,7 @@ class Parameters(object):
             parameter
 
         """
-        if _config:
-            return _config.get(section, parameter)
+        if self._config:
+            return self._config.get(section, parameter)
         else:
             return None
