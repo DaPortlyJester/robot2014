@@ -1,7 +1,10 @@
 """This module provides a disc feeder class."""
 
 # Imports
-import wpilib
+try:
+    import wpilib
+except ImportError:
+    from pyfrc import wpilib
 import common
 import datalog
 import parameters

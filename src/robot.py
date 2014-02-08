@@ -1,8 +1,10 @@
 """This module contains the FRC robot class."""
 
 # Imports
-import wpilib
-
+try:
+    import wpilib
+except ImportError:
+    from pyfrc import wpilib
 import common
 import datalog
 import drivetrain

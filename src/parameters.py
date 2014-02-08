@@ -49,6 +49,7 @@ class Parameters(object):
         if path:
             self._config = configparser.SafeConfigParser()
             self._config.read(path)
+            self.file_opened = True
             return True
         else:
             self.file_opened = False
