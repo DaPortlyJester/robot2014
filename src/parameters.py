@@ -17,7 +17,7 @@ class Parameters(object):
     # Private member objects
 
     # Private member variables
-    _file = "Hello"
+    _file = None
     _config = None
 
     def __init__(self, parameters_file="parameters.par", mode="r"):
