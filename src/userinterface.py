@@ -4,6 +4,7 @@
 
 # Imports
 import math
+import os
 
 import wpilib
 
@@ -131,7 +132,7 @@ class UserInterface(object):
         self._controller_1 = None
         self._controller_2 = None
         self._controller_1_previous_button_state = []
-        self._controller_2_previous_button-state = []
+        self._controller_2_previous_button_state = []
 
         # Initialize private parameters
         self._controller_1_buttons = 4
@@ -156,7 +157,7 @@ class UserInterface(object):
                 self._log = None
 
         # Read parameters file
-        self._parameters_file = params
+        self._parameters_file = os.path.realpath('../doc/' + params)
         self.load_parameters()
 
     def load_parameters(self):
@@ -170,10 +171,14 @@ class UserInterface(object):
 
         """
 
-
+        # Close and delete old objects
+        self._parameters = None
+        self._controller_1 = None
+        self._controller_2 = None
+        self._controller_1_previous_button_state = []
+        self._controller_2_previous_button_state = []
 
         # Read the parameters file
         self._parameters = parameters.Parameters(self._parameters_file)
-        if self._parameters and self._parameters.file_opened:
+        if self._parameters
             parameters_read = self._parameters.read_values()
-            self._parameters.close()
