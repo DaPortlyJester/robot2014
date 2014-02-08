@@ -64,19 +64,19 @@ class Parameters(object):
             self._file.close()
             self.file_opened = False
 
-    def get_config(self, section)
+    def read_values(self, section):
         """ Get the configuration dictionary
 
         Get the configuration dictionary for a section
 
         """
-        if !_config:
+        if not (self._config):
             return None
 
         if section:
-            return _config[section]
+            return self._config.items(section)
 
-        return _config._sections
+        return self._config._sections
 
     def get_value(self, section, parameter):
         """ Search the configuration dictionary for the parameter
@@ -89,7 +89,11 @@ class Parameters(object):
             parameter
 
         """
-        if self._config:
+
+        if not self._config:
+            return None
+
+        if section and parameter:
             return self._config.get(section, parameter)
         else:
             return None
